@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Squirrel Notes</title>
+	<link rel="stylesheet" href="/css/styles.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<script src="https://kit.fontawesome.com/0afa017979.js" crossorigin="anonymous"></script>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/9.5.0/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/9.5.0/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-storage-compat.js"></script>
+    <!-- <script defer src="/__/firebase/9.5.0/firebase-analytics-compat.js"></script> -->
+    <!-- <script defer src="/__/firebase/9.5.0/firebase-remote-config-compat.js"></script> -->
+    <!-- <script defer src="/__/firebase/9.5.0/firebase-performance-compat.js"></script> -->
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+        
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+                apiKey: "AIzaSyCiDQp0mdiPdwcBZ4oG3slX7YugpKBGfpw",
+                authDomain: "squirrel-appointments.firebaseapp.com",
+                projectId: "squirrel-appointments",
+                storageBucket: "squirrel-appointments.appspot.com",
+                messagingSenderId: "72949315500",
+                appId: "1:72949315500:web:88a6aa77d9e6607af46c09",
+                measurementId: "G-VGWC5S5K3R"
+            };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
+
+</head>
+<body>
+    <div id="app" v-cloak>
+        <header>
+            <nav>
+                <div id="top-logo-container">
+                    <img id="top-logo" src="/images/squirrel-logo-text.png" alt="Appointment Tracker">
+                </div>
+                <div id="top-contact-area">
+					<a id="top-contact-text" class="activatable" :class="{ activeHoverAnimation: isActiveHoverAnimation }" href="https://andresaranda.github.io/">
+						<div :class="{ activeHoverAnimation: (topActiveBtn === 'none') }">&nbsp &nbsp &nbsp &nbsp Contact developer...</div>
+						<div class="light-color" :class="{ activeHoverAnimation: (topActiveBtn === 'email') }">&nbsp &nbsp &nbsp aaranda@pucp.edu.pe</div>
+						<div class="light-color" :class="{ activeHoverAnimation: (topActiveBtn === 'github') }">https://andresaranda.github.io</div>
+						<div class="light-color" :class="{ activeHoverAnimation: (topActiveBtn === 'phone') }">&nbsp &nbsp &nbsp &nbsp &nbsp +51-991-099-482</div>
+                    </a>
+					<div id="top-contact-btns">
+						<a id="top-email-btn" class="btn" href="mailto:aaranda@pucp.edu.pe" @mouseover="topActiveBtn = 'email'" @mouseleave="topActiveBtn = 'none'">
+							<div><i class="far fa-envelope"></i></div>
+						</a>
+						<a id="top-github-btn" class="btn" href="https://andresaranda.github.io/" @mouseover="topActiveBtn = 'github'" @mouseleave="topActiveBtn = 'none'">
+							<div><i class="fab fa-github-alt"></i></div>
+						</a>
+						<a id="top-phone-btn" class="btn" href="tel:+51-991-099-482" @mouseover="topActiveBtn = 'phone'" @mouseleave="topActiveBtn = 'none'">
+							<div><i class="fas fa-phone-alt"></i></div>
+						</a>
+					</div>
+                </div>
+            </nav>
+            <section id="start-menu">
+                <div id="log-in-create" class="user-menu" :class="{ hidden: showLogOut }">
+                    <h3 :key="startMenu">
+                        {{ (startMenu === 'log-in') ? 'Log in' : 'Create account' }}
+                    </h3>
+                    <!-- <div class="data-input">
+                        <label for="email-input">Email</label>
+                        <input type="email" name="email-input" id="email-input" v-model='logInEmail' placeholder="Please place your email...">
+                    </div>
+                    <div class="data-input">
+                        <label for="password-input">Password</label>
+                        <input type="password" name="password-input" id="password-input" v-model="logInPassword" placeholder="Please place your password...">
+                    </div> -->
+                    <div id="start-error-msg" class="error-msg" :class="{ hidden: !showStartErrorMsg }">{{ startErrorMsg }}</div>
+                    <!-- <button id="log-in-btn" class="btn" :class="{ hidden: !showLogIn }" key="log-in-btn" @click.prevent="logIn()">
+                        <div>Log in</div>
+                    </button> -->
+					<button id="log-in-google-btn" class="btn" :class="{ hidden: !showLogIn }" key="log-in-google-btn" @click.prevent="googleLogIn()">
+                        <div>Log in with Google</div>
+                    </button>
+                    <!-- <button id="create-account-btn" class="btn" :class="{ hidden: !showCreateAccount }" key="create-account-btn" @click.prevent="createAccount()">
+                        <div>Create account</div>
+                    </button>
+                    <button id="create-account-sm-btn" class="small-btn highlight" v-if="showLogIn" key="create-sm-btn" @click.prevent="startMenu = 'create-account'; clearStartMenu();">
+                        <div>I don't have an account</div>
+                    </button> -->
+                    <a class="small-btn highlight" v-if="showLogIn" key="create-sm-btn" href="https://accounts.google.com/signup/v2/webcreateaccount?hl=en&flowName=GlifWebSignIn&flowEntry=SignUp">
+                        <div>I don't have an account</div>
+                    </a>
+                    <!-- <button id="log-in-sm-btn" class="small-btn highlight" v-if="showCreateAccount" key="log-in-sm-btn" @click.prevent="startMenu = 'log-in'; clearStartMenu();">
+                        <div>Log in with existing account</div>
+                    </button> -->
+                </div>
+                <div id="log-out" class="user-menu" :class="{ hidden: !showLogOut }">
+                    <h3 id="userName">Welcome,</h3>
+					<h4 id="userEmail">{{ userName.toUpperCase() }} <br> {{ userEmail }}</h4>
+                    <button id="log-out-btn" class="btn" @click.prevent="logOut()">
+                        <div>Log out</div>
+                    </button>
+                </div>
+            </section>
+        </header>
+        <main>
+            <div class="overlay" :class="{ hideoverlay: !showForm }">
+                <div id="input-form" :class="{ hideform: !showForm }">
+                    <form action="">
+                        <h2 :key="isNewForm ? 'new' : 'modify'">
+                            {{ isNewForm ? 'New appointment' : 'Modify appointment' }}
+                        </h2>
+                        <div class="data-input">
+                            <label for="form-date">Date</label>
+                            <input type="date" name="form-date" id="form-date" v-model="formData.date">
+                        </div>
+                        <div class="data-input">
+                            <label for="form-time">Time</label>
+                            <input type="time" name="form-time" id="form-time" v-model="formData.time">
+                        </div>
+                        <div class="data-input">
+                            <label for="form-organizer">Organizer</label>
+                            <input type="text" name="form-organizer" id="form-organizer" v-model="formData.organizer" placeholder="Full name...">
+                        </div>
+                        <div class="data-input">
+                            <label for="form-attendee">Attendee</label>
+                            <input type="text" name="form-attendee" id="form-attendee" v-model="formData.attendee" placeholder="Full name...">
+                        </div>
+                        <div class="data-input">
+                            <label for="form-state">State</label>
+                            <select name="form-state" id="form-state" v-model="formData.state">
+                                <option v-for="state in stateList" :value="{ id: state.id, name: state.name }">
+                                    {{ state.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <!-- <div class="data-input">
+                            <label for="form-file">Archivo (opcional)</label>
+                            <input type="file" name="form-file" id="form-file" @change="">
+                        </div> -->
+						<div id="form-error-msg" class="error-msg" :class="{ hidden: !showFormErrorMsg }">{{ formErrorMsg }}</div>
+                        <div class="data-input center">
+                            <button id="cancel-submit" class="btn" @click.prevent="closeForm()">
+                                <div>Cancel</div>
+                            </button>
+                            <button type="submit" id="submit-data" class="btn" @click.prevent="submitForm()">
+                                <div>{{ isNewForm ? 'Create' : 'Modify'}}</div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+			<div class="overlay" :class="{ hideoverlay: !showAlert }">
+				<div class="alertbox" :class="{ hidealert: !showAlert }">
+					<h2>Delete Items</h2>
+					<p>Are you sure you want to delete the selected items? Once deleted, they cannot be recovered.</p>
+					<div class="data-input center">
+						<button id="cancel-submit" class="btn" @click.prevent="closeAlert()">
+							<div>Cancel</div>
+						</button>
+						<button type="submit" id="submit-data" class="btn" @click.prevent="deleteSelectedItems()">
+							<div>Delete</div>
+						</button>
+					</div>
+				</div>
+			</div>
+            <div id="main-table">
+                <h1>Appointment Tracker</h1>
+                <hr>
+                <form id="multi-search">
+                    <div id="multi-search-bar">
+                        <div class="data-input">
+                            <label for="search-date">Date</label>
+                            <input type="date" name="search-date" id="search-date" v-model="searchData.date">
+                        </div>
+                        <div class="data-input">
+                            <label for="search-time">Time</label>
+                            <input type="time" name="search-time" id="search-time" v-model="searchData.time">
+                        </div>
+                        <div class="data-input">
+                            <label for="search-organizer">Organizer</label>
+                            <input type="text" name="search-organizer" id="search-organizer" v-model="searchData.organizer" placeholder="Full name...">
+                        </div>
+                        <div class="data-input">
+                            <label for="search-attendee">Attendee</label>
+                            <input type="text" name="search-attendee" id="search-attendee" v-model="searchData.attendee" placeholder="Full name...">
+                        </div>
+                        <div class="data-input">
+                            <label for="search-state">State</label>
+                            <select name="search-state" id="search-state" v-model="searchData.state">
+                                <option v-for="state in stateList" :value="{ id: state.id, name: state.name }">
+                                    {{ state.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+					<div class="data-input center">
+						<button id="submit-clear" class="btn" @click.prevent="clearSearchFields()">
+							<div>Clear</div>
+						</button>
+						<button type="submit" id="submit-search" class="btn" @click.prevent="getSearchedData()">
+							<div>Search</div>
+						</button>
+					</div>
+					<div id="search-error-msg" class="error-msg" :class="{ hidden: !showSearchErrorMsg }">{{ searchErrorMsg }}</div>
+                </form>
+                <hr>
+				<div class="msg-section">
+					<span id="center-msg">Modify or create a new consultation by clicking the buttons below</span>
+                	<div id="table-error-msg" class="error-msg" :class="{ hidden: !showTableErrorMsg }">{{ tableErrorMsg }}</div>
+				</div>
+				<section id="interact-bar">
+                    <div class="left-section">
+                        <button id="new-btn" class="btn" @click.prevent="openNewForm">
+                            <div>New</div>
+                        </button>
+                        <button id="modify-btn" class="btn" @click.prevent="openModifyForm">
+                            <div>Modify</div>
+                        </button>
+						<button id="delete-btn" class="btn" @click.prevent="openAlertbox">
+                            <div>Delete</div>
+                        </button> 
+                    </div>
+                    <div class="right-section">
+                        <button id="pending-btn" class="btn" @click.prevent="updateCheckedDataState('pending')">
+                            <div>Pending</div>
+                        </button>
+                        <button id="done-btn" class="btn" @click.prevent="updateCheckedDataState('done')">
+                            <div>Done</div>
+                        </button>
+                        <button id="cancelled-btn" class="btn" @click.prevent="updateCheckedDataState('cancelled')">
+                            <div>Cancelled</div>
+                        </button>
+                    </div>
+                </section>
+				<div id="table-container">
+					<table id="filtered-data">
+                        <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Date</th>
+                                <th >Time</th>
+                                <th>Organizer</th>
+                                <th>Attendee</th>
+                                <th>State</th>
+                                <!-- <th>Archivo</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="tableData in tableDataList" :key="tableData.id">
+                                <td class="td-btn">
+                                    <input type="checkbox" name="" class="checkbox" :id="`${tableData.id}-checkbox`" :value="tableData" v-model="checkedDataList">
+                                </td>
+                                <td>{{ tableData.date }}</td>
+                                <td>{{ tableData.timeAMPM }}</td>
+                                <td>{{ tableData.organizer }}</td>
+                                <td>{{ tableData.attendee }}</td>
+                                <td>{{ tableData.state.name }}</td>
+                                <!-- <td>{{ tableData.file }}</td> -->
+                            </tr>
+                        </tbody>
+					</table>
+				</div>
+                <section id="page-number"></section>
+            </div>
+        </main>
+        <footer>
+            <div class="foot-title">Contact Developer</div>
+            <a href="mailto:aaranda@pucp.edu.pe" class="data-input highlight">
+                <div>
+                    <i class="far fa-envelope"></i>
+                </div>
+                <div>aaranda@pucp.edu.pe</div>
+            </a>
+			<a href="https://andresaranda.github.io/" class="data-input highlight">
+                <div>
+                    <i class="fab fa-github-alt"></i>
+                </div>
+                <div>andresaranda.github.io</div>
+            </a>
+            <a href="tel:+51-991-099-482" class="data-input highlight">
+                <div>
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <div>+51-991-099-482</div>
+            </a>
+        </footer>
+    </div>
+	<script src="https://cdn.jsdelivr.net/npm/vue@3.0.5"></script>
+    <script defer src="app.js"></script>
+</body>
+</html>
