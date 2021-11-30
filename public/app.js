@@ -1,9 +1,11 @@
 // page number https://firebase.google.com/docs/firestore/query-data/query-cursors#paginate_a_query
 // add files (with reference id)
 // add log in
-// small green logos on header
 
 // change colors
+// change header
+// icons on form btns
+// small green logos on header
 
 const app = Vue.createApp({
     data(){

@@ -9,6 +9,18 @@
     --light-color: rgb(252, 252, 252);
     --dark-color: rgb(20, 20, 20);
     --grey-color: rgb(240, 240, 240);
+
+    /* Alternative color palette 1: */
+    /* --primary-color: #C51350;
+    --primary-highlight-color: #E8751A;
+    --secondary-color: #8A1253;
+    --secondary-highlight-color: #FDA403; */
+
+    /* Alternative color palette 2: */
+    /* --primary-color: #900048;
+    --primary-highlight-color: #FF8260;
+    --secondary-color: #240041;
+    --secondary-highlight-color: #FF4057; */
 }
 [v-cloak] {
     display: none;
