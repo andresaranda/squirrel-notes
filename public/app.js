@@ -1,11 +1,11 @@
 // page number https://firebase.google.com/docs/firestore/query-data/query-cursors#paginate_a_query
-// add files (with reference id)
-// add log in
+// add option to add pdf files (with reference id)
+// add log in with email and password
 
 // change colors
-// change header
-// icons on form btns
-// small green logos on header
+// change header format
+// icons on form btns (accept, modify, delete, pending, done, cancelled) (maybe letters and icons, maybe only icons)
+// small green icons floating on header (maybe enlarge or rotate on hover) (could be absolutely placed)
 
 const app = Vue.createApp({
     data(){
