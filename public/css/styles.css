@@ -2,21 +2,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
 :root {
-    --primary-color: rgb(34, 87, 122);
-    --primary-highlight-color: rgb(56, 163, 165); /* rgb(102, 78, 136) */
+    /* --primary-color: rgb(34, 87, 122);
+    --primary-highlight-color: rgb(56, 163, 165);
     --secondary-color: rgb(87, 204, 153);
-    --secondary-highlight-color: rgb(128, 237, 153); /* rgb(169, 228, 215) */
+    --secondary-highlight-color: rgb(128, 237, 153);
     --light-color: rgb(252, 252, 252);
     --dark-color: rgb(20, 20, 20);
-    --grey-color: rgb(240, 240, 240);
+    --grey-color: rgb(240, 240, 240); */
 
     /* Alternative color palette 1: */
+    --primary-color: #7928ca; /*center-msg, #table-container, :placeholder:hover, .checkbox border*/
+    --primary-highlight-color: #ff0080; /*.error-msg, select color*/
+    --secondary-color: #252f40; /*#627594*/
+    --secondary-highlight-color: #252f40; /*#a8b8d8*/
+    --light-color: rgb(252, 252, 252);
+    --dark-color: #344767; /* #252f40 #141727 #2c3154 */
+    --grey-color: #ced4da;
+
+    /* Alternative color palette 2: */
     /* --primary-color: #C51350;
     --primary-highlight-color: #E8751A;
     --secondary-color: #8A1253;
     --secondary-highlight-color: #FDA403; */
 
-    /* Alternative color palette 2: */
+    /* Alternative color palette 3: */
     /* --primary-color: #900048;
     --primary-highlight-color: #FF8260;
     --secondary-color: #240041;
@@ -111,7 +120,7 @@ form {
 }
 input {
     border-radius: 10px;
-    color: var(--primary-highlight-color);
+    color: var(--primary-color);
     background-color: var(--light-color);
     padding-left: 10px;
     padding-right: 10px;
@@ -148,7 +157,7 @@ header :hover::placeholder {
     height: 20px;
     width: 20px;
 	border-radius: 100%;
-    border: solid 2px var(--primary-highlight-color);
+    border: solid 2px var(--primary-color);
     transition: border 0.2s ease-in-out,
                 height 0.2s ease-in-out,
                 width 0.2s ease-in-out,
@@ -187,7 +196,7 @@ header input {
     height: 25px;
 }
 main input {
-    border: 2px var(--primary-color) solid;
+    border: 2px var(--secondary-color) solid;
     height: 25px;
 }
 label {
@@ -196,7 +205,7 @@ label {
 }
 main select {
     border-radius: 10px;
-    border: 2px var(--primary-color) solid;
+    border: 2px var(--secondary-color) solid;
     color: var(--primary-color);
     height: 25px;
     padding-left: 5px;
@@ -288,6 +297,9 @@ main option {
     transition: height 0.4s ease-in-out,
                 width 0.4s ease-in-out;
 }
+main .btn::before, .checkbox::before {
+    background-color: var(--primary-highlight-color);
+}
 .btn:hover::before, .checkbox:checked::before, .activatable.activeHoverAnimation::before {
     height: 150%;
     width: 150%;
@@ -308,7 +320,7 @@ main .btn {
     margin: 10px;
     padding-left: 15px;
     padding-right: 15px;
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
     color: var(--light-color);
 }
 #top-contact-area {
@@ -429,7 +441,7 @@ nav {
 }
 .error-msg {
     font-size: 0.8em;
-    color: var(--secondary-color);
+    color: var(--primary-highlight-color);
     height: auto;
     margin: 10px auto 10px auto;
     max-width: 70%;
@@ -471,6 +483,9 @@ main {
     border: solid var(--secondary-color) 5px;
     overflow: hidden;
 }
+.alertbox p {
+    color: var(--primary-color);
+}
 #input-form {
     position: fixed;
     top: 50%;
@@ -490,7 +505,7 @@ main {
     padding: 25px;
     background-color: var(--light-color);
     border-radius: 50px;
-    border: solid var(--secondary-color) 5px;
+    border: solid var(--primary-color) 5px;
 }
 #input-form label {
     width: 150px;
@@ -536,7 +551,7 @@ main {
 #center-msg {
     display: block;
     font-size: 0.8em;
-    color: var(--primary-highlight-color);
+    color: var(--primary-color);
 }
 #interact-bar {
     display: grid;
@@ -563,7 +578,7 @@ table {
 #table-container {
     margin: 30px;
     border-radius: 20px;
-    border: 1px solid var(--primary-highlight-color);
+    border: 1px solid var(--primary-color);
     overflow: hidden;
 }
 td {
